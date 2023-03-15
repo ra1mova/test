@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: roza-issuer
+  namespace: roza
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: roza.raimova11@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: roza-crt
+  namespace: roza
+spec:
+  secretName: my-tls
+  dnsNames:
+    - rooz.example.ml
+    - rooz.ml
+  issuerRef:
+    name: roza-issuer
+    kind: Issuer
+    group: cert-manager.io
